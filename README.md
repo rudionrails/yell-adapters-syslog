@@ -1,8 +1,12 @@
-Yell Adapters Syslog - Syslog Adapter for Your Extensible Logging Library
+Syslog Adapter for Yell - Your Extensible Logging Library
 
 If you are not yet familiar with **Yell - Your Extensible Logging Library** 
 check out the githup project under https://github.com/rudionrails/yell or jump 
 directly into the Yell wiki at https://github.com/rudionrails/yell/wiki.
+
+[![Build Status](https://secure.travis-ci.org/rudionrails/yell-adapters-syslog.png?branch=master)](http://travis-ci.org/rudionrails/yell-adapters-syslog)
+
+The Syslog adapter for Yell works and is tested with ruby 1.8.7, 1.9.x, jruby 1.8 and 1.9 mode, rubinius 1.8 and 1.9 as well as ree.
 
 ## Installation
 
