@@ -1,7 +1,5 @@
 # encoding: utf-8
 
-require 'syslog'
-
 module Yell #:nodoc:
   module Adapters #:nodoc:
 

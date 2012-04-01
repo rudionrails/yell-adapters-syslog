@@ -44,10 +44,10 @@ describe Yell::Adapters::Syslog do
   context "FacilityMap" do
     subject { Yell::Adapters::Syslog::FacilityMap }
 
-    # :console  => ::Syslog::LOG_CONSOLE, # described in 1.9.3 docu, but not defined
-    # :lrp      => ::Syslog::LOG_LRP, # described in 1.9.3 docu, but not defined
-    # :ntp      => ::Syslog::LOG_NTP, # described in 1.9.3 docu, but not defined
-    # :security => ::Syslog::LOG_SECURITY, # described in 1.9.3 docu, but not defined
+    # :console  => Syslog::LOG_CONSOLE, # described in 1.9.3 docu, but not defined
+    # :lrp      => Syslog::LOG_LRP, # described in 1.9.3 docu, but not defined
+    # :ntp      => Syslog::LOG_NTP, # described in 1.9.3 docu, but not defined
+    # :security => Syslog::LOG_SECURITY, # described in 1.9.3 docu, but not defined
     it { subject[:auth].should == Syslog::LOG_AUTH }
     it { subject[:authpriv].should == Syslog::LOG_AUTHPRIV }
     it { subject[:cron].should == Syslog::LOG_CRON }

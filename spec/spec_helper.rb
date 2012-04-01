@@ -5,7 +5,6 @@ require 'yell-adapters-syslog'
 
 require 'rspec'
 require 'rr'
-require 'timecop'
 
 RSpec.configure do |config|
   config.mock_framework = :rr
