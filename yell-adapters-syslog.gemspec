@@ -19,4 +19,6 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_runtime_dependency "yell", "~> 0.4"
+  s.add_development_dependency "rspec"
+  s.add_development_dependency "rr"
 end

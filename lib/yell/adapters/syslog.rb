@@ -118,21 +118,33 @@ module Yell #:nodoc:
       private
 
       def write!( event )
-        stream.log( SeverityMap[event.level], event.message )
+        stream.log( SeverityMap[event.level], clean(event.message) )
       rescue Exception => e
         close
 
         # re-raise the exception
-        raise( e, caller )
+        raise( e )
       end
 
       def _new_stream
-        close if ::Syslog.opened?
+        return ::Syslog if ::Syslog.opened?
+
         ::Syslog.open( @ident, @syslog_options, @facility )
+      end
+
+      # Borrowed from [SyslogLogger](https://github.com/seattlerb/sysloglogger)
+      def clean( message )
+        message = message.to_s.dup
+        message.strip!
+        message.gsub!(/%/, '%%') # syslog(3) freaks on % (printf)
+        message.gsub!(/\e\[[^m]*m/, '') # remove useless ansi color codes
+
+        message
       end
 
     end
 
     register( :syslog, Yell::Adapters::Syslog )
+
   end
 end
