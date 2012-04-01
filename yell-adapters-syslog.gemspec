@@ -1,24 +1,22 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "yell-adapters-syslog/version"
+require "yell/adapters/syslog/version"
 
 Gem::Specification.new do |s|
   s.name        = "yell-adapters-syslog"
   s.version     = Yell::Adapters::Syslog::VERSION
   s.authors     = ["Rudolf Schmidt"]
-  s.email       = ["me@rudionrails.com"]
-  s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
 
-  s.rubyforge_project = "yell-adapters-syslog"
+  s.homepage    = "http://rubygems.org/gems/yell"
+  s.summary     = %q{Yell - Your Extensible Logging Library }
+  s.description = %q{Syslog adapter for Yell}
+
+  s.rubyforge_project = "yell"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  # specify any dependencies here; for example:
-  # s.add_development_dependency "rspec"
-  # s.add_runtime_dependency "rest-client"
+  s.add_runtime_dependency "yell", "~> 0.4"
 end
