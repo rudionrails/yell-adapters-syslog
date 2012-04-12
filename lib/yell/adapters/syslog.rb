@@ -56,29 +56,47 @@ module Yell #:nodoc:
         :local7   => ::Syslog::LOG_LOCAL7
       }
 
-      def initialize( options = {}, &block )
-        ident options[:ident] || $0
-        options options[:options] || [:pid, :cons]
-        facility options[:facility]
-
-        super( options, &block )
+      setup do |options|
+        self.ident    = options[:ident] || $0
+        self.options  = options[:options] || [:pid, :cons]
+        self.facility = options[:facility]
       end
 
-      def stream
-        @stream ||= _new_stream
+      write do |event|
+        stream.log( SeverityMap[event.level], clean(event.message) )
       end
 
-      def close
-        @stream.close if @stream.respond_to? :close
-      rescue
-        # do nothing
-      ensure
-        @stream = nil
+      close do
+        begin
+          @stream.close if @stream.respond_to? :close
+        rescue Exception
+          # do nothing
+        ensure
+          @stream = nil
+        end
       end
 
-      # Identify the calling program
+
+      # Access the Syslog ident
+      attr_accessor :ident
+
+      # Access the Syslog options
+      attr_reader :options
+
+      # Access the Syslog facility
+      attr_reader :facility
+
+
+      # Deprecated: use :ident= in future
       def ident( val = nil )
-        @ident = val
+        if val.nil?
+          @ident
+        else
+          # deprecate, but should still work
+          Yell._deprecate( "0.6.0", "Use :ident= for setting the Syslog ident" )
+
+          self.ident = val
+        end
       end
 
       # Set the log facility for Syslog
@@ -86,48 +104,69 @@ module Yell #:nodoc:
       # See {Yell::Adapters::Syslog::OptionMap OptionMap} for allowed values.
       #
       # @example Direct or Symbol
-      #   facility( Syslog::LOG_NDELAY )
-      #   facility( :ndelay )
+      #   options = Syslog::LOG_CONS
+      #   options = :cons
       #
       # @example Multiple
-      #   facility( :ndelay, Syslog::LOG_NDELAY ):
-      def options( *values )
-        @syslog_options = values.flatten.map do |v|
+      #   options = [:ndelay, Syslog::LOG_NDELAY]
+      def options=( *values )
+        @options = values.flatten.map do |v|
           v.is_a?(Symbol) ? OptionMap[v] : v
         end.inject { |a, b| a | b }
       end
 
+      # Deprecated: use options= in future
+      def options( *values )
+        if values.empty?
+          @options
+        else
+          # deprecate, but should still work
+          Yell._deprecate( "0.6.0", "Use :options= for setting the Syslog options" )
+
+          self.options = values
+        end
+      end
+
+
       # Set the log facility for Syslog
       #
       # See {Yell::Adapters::Syslog::FacilityMap FacilityMap} for allowed values.
+      #
       # @example Direct or Symbol
-      #  facility( :user  )
-      #  facility( Syslog::LOG_CONSOLE )
+      #  facility = :user
+      #  facility = Syslog::LOG_CONSOLE
       #
       # @example Multiple
-      #   facility( :user, Syslog::LOG_CONSOLE )
-      def facility( *values )
+      #   facility = [:user, Syslog::LOG_CONSOLE]
+      def facility=( *values )
         @facility = values.flatten.map do |v|
           v.is_a?(Symbol) ? FacilityMap[v] : v
         end.inject { |a, b| a | b }
       end
 
+      # Deprecated, use facility= in future
+      def facility( *values )
+        if values.empty?
+          @facility
+        else
+          # deprecate, but should still work
+          Yell._deprecate( "0.6.0", "Use :facility= for setting the Syslog facility" )
+
+          self.facility = values
+        end
+      end
+
 
       private
 
-      def write!( event )
-        stream.log( SeverityMap[event.level], clean(event.message) )
-      rescue Exception => e
-        close
-
-        # re-raise the exception
-        raise( e )
+      def stream
+        @stream ||= _new_stream
       end
 
       def _new_stream
         return ::Syslog if ::Syslog.opened?
 
-        ::Syslog.open( @ident, @syslog_options, @facility )
+        ::Syslog.open( @ident, @options, @facility )
       end
 
       # Borrowed from [SyslogLogger](https://github.com/seattlerb/sysloglogger)

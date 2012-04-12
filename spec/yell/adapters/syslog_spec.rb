@@ -25,9 +25,9 @@ describe Yell::Adapters::Syslog do
   context "a new Yell::Adapters::Syslog instance" do
     subject { Yell::Adapters::Syslog.new }
 
-    it { subject.instance_variable_get(:@ident).should == $0 }
-    it { subject.instance_variable_get(:@syslog_options).should == (Syslog::LOG_PID | Syslog::LOG_CONS) }
-    it { subject.instance_variable_get(:@facility).should be_nil }
+    it { subject.ident.should == $0 }
+    it { subject.options.should == (Syslog::LOG_PID | Syslog::LOG_CONS) }
+    it { subject.facility.should be_nil }
   end
 
   context "OptionMap" do
@@ -75,7 +75,7 @@ describe Yell::Adapters::Syslog do
     it "should be passed" do
       mock.proxy( Syslog ).open( "my ident", anything, anything )
 
-      subject.ident "my ident"
+      subject.ident = "my ident"
       subject.write Yell::Event.new("INFO", "Hello World")
     end
   end
@@ -86,14 +86,14 @@ describe Yell::Adapters::Syslog do
     it "should be passed" do
       mock.proxy( Syslog ).open( anything, Syslog::LOG_NDELAY, anything )
 
-      subject.options :ndelay
+      subject.options = :ndelay
       subject.write Yell::Event.new("INFO", "Hello World")
     end
 
     it "should work with multiple params" do
       mock.proxy( Syslog ).open( anything, Syslog::LOG_PID|Syslog::LOG_NDELAY, anything )
 
-      subject.options :pid, :ndelay
+      subject.options = [:pid, :ndelay]
       subject.write Yell::Event.new("INFO", "Hello World")
     end
   end
@@ -104,14 +104,14 @@ describe Yell::Adapters::Syslog do
     it "should be passed" do
       mock.proxy( Syslog ).open( anything, anything, Syslog::LOG_USER )
 
-      subject.facility :user
+      subject.facility = :user
       subject.write Yell::Event.new("INFO", "Hello World")
     end
 
     it "should work with multiple params" do
       mock.proxy( Syslog ).open( anything, anything, Syslog::LOG_DAEMON|Syslog::LOG_USER )
 
-      subject.facility :daemon, :user
+      subject.facility = [:daemon, :user]
       subject.write Yell::Event.new("INFO", "Hello World")
     end
   end
