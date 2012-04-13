@@ -45,7 +45,7 @@ You can pass set `options` and the `facility`:
 
 ```ruby
 logger = Yell.new do
-  adapter :syslog, :facility => :user, :syslog_options => [:pid, :cons]
+  adapter :syslog, :facility => :user, :options => [:pid, :cons]
 end
 
 logger.info 'Hello World!'
