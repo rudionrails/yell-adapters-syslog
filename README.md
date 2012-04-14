@@ -34,8 +34,8 @@ logger.info "Hello World"
 Or alternatively with the block syntax:
 
 ```ruby
-logger = Yell.new do
-  adapter :syslog
+logger = Yell.new do |l|
+  l.adapter :syslog
 end
 
 logger.info 'Hello World!'
@@ -44,8 +44,8 @@ logger.info 'Hello World!'
 You can pass set `options` and the `facility`:
 
 ```ruby
-logger = Yell.new do
-  adapter :syslog, :facility => :user, :options => [:pid, :cons]
+logger = Yell.new do |l|
+  l.adapter :syslog, :facility => :user, :options => [:pid, :cons]
 end
 
 logger.info 'Hello World!'
