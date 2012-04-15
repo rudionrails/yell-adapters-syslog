@@ -12,6 +12,11 @@ rvm:
   - rbx-19mode
   - ree
 
+branch:
+  only:
+    - master
+    - /^v[\d\.]+$/
+
 notifications:
   email:
     - me@rudionrails.com
