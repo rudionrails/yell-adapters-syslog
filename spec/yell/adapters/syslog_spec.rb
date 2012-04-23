@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Yell::Adapters::Syslog do
+  let( :event ) { Yell::Event.new( 1, "Hello World" ) }
+
   before do
     Syslog.close if Syslog.opened?
   end
@@ -9,18 +11,18 @@ describe Yell::Adapters::Syslog do
     let( :adapter ) { Yell::Adapters::Syslog.new }
 
     it "should call Syslog correctly" do
-      mock( Syslog ).log( Yell::Adapters::Syslog::SeverityMap[subject], "Hello World" )
+      mock( Syslog ).log( Yell::Adapters::Syslog::Severities[subject], "Hello World" )
 
       adapter.write Yell::Event.new( subject, "Hello World" )
     end
   end
 
-  it_behaves_like( "a Syslog adapter" ) { subject { 'DEBUG' } }
-  it_behaves_like( "a Syslog adapter" ) { subject { 'INFO' } }
-  it_behaves_like( "a Syslog adapter" ) { subject { 'WARN' } }
-  it_behaves_like( "a Syslog adapter" ) { subject { 'ERROR' } }
-  it_behaves_like( "a Syslog adapter" ) { subject { 'FATAL' } }
-  it_behaves_like( "a Syslog adapter" ) { subject { 'UNKNOWN' } }
+  it_behaves_like( "a Syslog adapter" ) { subject { 0 } } # debug
+  it_behaves_like( "a Syslog adapter" ) { subject { 1 } } # info
+  it_behaves_like( "a Syslog adapter" ) { subject { 2 } } # warn
+  it_behaves_like( "a Syslog adapter" ) { subject { 3 } } # error
+  it_behaves_like( "a Syslog adapter" ) { subject { 4 } } # fatal
+  it_behaves_like( "a Syslog adapter" ) { subject { 5 } } # unknown
 
   context "a new Yell::Adapters::Syslog instance" do
     subject { Yell::Adapters::Syslog.new }
@@ -76,7 +78,7 @@ describe Yell::Adapters::Syslog do
       mock.proxy( Syslog ).open( "my ident", anything, anything )
 
       subject.ident = "my ident"
-      subject.write Yell::Event.new("INFO", "Hello World")
+      subject.write event
     end
   end
 
@@ -87,14 +89,14 @@ describe Yell::Adapters::Syslog do
       mock.proxy( Syslog ).open( anything, Syslog::LOG_NDELAY, anything )
 
       subject.options = :ndelay
-      subject.write Yell::Event.new("INFO", "Hello World")
+      subject.write event
     end
 
     it "should work with multiple params" do
       mock.proxy( Syslog ).open( anything, Syslog::LOG_PID|Syslog::LOG_NDELAY, anything )
 
       subject.options = [:pid, :ndelay]
-      subject.write Yell::Event.new("INFO", "Hello World")
+      subject.write event
     end
   end
 
@@ -105,14 +107,14 @@ describe Yell::Adapters::Syslog do
       mock.proxy( Syslog ).open( anything, anything, Syslog::LOG_USER )
 
       subject.facility = :user
-      subject.write Yell::Event.new("INFO", "Hello World")
+      subject.write event
     end
 
     it "should work with multiple params" do
       mock.proxy( Syslog ).open( anything, anything, Syslog::LOG_DAEMON|Syslog::LOG_USER )
 
       subject.facility = [:daemon, :user]
-      subject.write Yell::Event.new("INFO", "Hello World")
+      subject.write event
     end
   end
 

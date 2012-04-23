@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+require 'syslog'
+
 module Yell #:nodoc:
   module Adapters #:nodoc:
 
@@ -9,15 +11,6 @@ module Yell #:nodoc:
       #
       # `man syslog` to see the severities
       Severities = [7, 6, 4, 3, 2, 1]
-
-      # Map Syslog severities to internal represenation
-      #   'DEBUG'   => 7
-      #   'INFO'    => 6
-      #   'WARN'    => 4
-      #   'ERROR'   => 3
-      #   'FATAL'   => 2
-      #   'UNKNOWN' => 1
-      SeverityMap = Hash[ *(Yell::Severities.zip(Severities).flatten) ]
 
       # Map Syslog options to internal representation
       OptionMap = {
@@ -63,7 +56,7 @@ module Yell #:nodoc:
       end
 
       write do |event|
-        stream.log( SeverityMap[event.level], clean(event.message) )
+        stream.log( Severities[event.level], clean(event.message) )
       end
 
       close do
