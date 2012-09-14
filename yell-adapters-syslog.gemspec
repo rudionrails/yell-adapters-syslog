@@ -1,10 +1,9 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "yell/adapters/syslog/version"
 
 Gem::Specification.new do |s|
   s.name        = "yell-adapters-syslog"
-  s.version     = Yell::Adapters::Syslog::VERSION
+  s.version     = "0.13.4"
   s.authors     = ["Rudolf Schmidt"]
 
   s.homepage    = "http://rubygems.org/gems/yell"
@@ -19,6 +18,4 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_runtime_dependency "yell", ">= 0.13.4"
-  s.add_development_dependency "rspec"
-  s.add_development_dependency "rr"
 end
