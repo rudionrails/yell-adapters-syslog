@@ -14,12 +14,12 @@ module Yell #:nodoc:
 
       # Map Syslog options to internal representation
       OptionMap = {
-        :cons   => ::Syslog::LOG_CONS,
-        :ndelay => ::Syslog::LOG_NDELAY,
-        :nowait => ::Syslog::LOG_NOWAIT,
-        :odelay => ::Syslog::LOG_ODELAY,
-        :perror => ::Syslog::LOG_PERROR,
-        :pid    => ::Syslog::LOG_PID
+        :cons   => ::Syslog::LOG_CONS,    # If there is an error while sending to the system logger, write directly to the console instead.
+        :ndelay => ::Syslog::LOG_NDELAY,  # Open the connection now, rather than waiting for the first message to be written.
+        :nowait => ::Syslog::LOG_NOWAIT,  # Don’t wait for any child processes created while logging messages. (Has no effect on Linux.)
+        :odelay => ::Syslog::LOG_ODELAY,  # Opposite of LOG_NDELAY; wait until a message is sent before opening the connection. (This is the default.)
+        :perror => ::Syslog::LOG_PERROR,  # Print the message to stderr as well as sending it to syslog. (Not in POSIX.1-2001.)
+        :pid    => ::Syslog::LOG_PID      # Include the current process ID with each message.
       }
 
       # Map Syslog facilities to internal represenation
