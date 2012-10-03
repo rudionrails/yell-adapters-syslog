@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = "yell-adapters-syslog"
   s.version     = "0.13.4"
+
   s.authors     = ["Rudolf Schmidt"]
 
   s.homepage    = "http://rubygems.org/gems/yell"
@@ -12,10 +12,11 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "yell"
 
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.files         = `git ls-files`.split($\)
+  s.executables   = s.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  s.test_files    = s.files.grep(%r{^(test|spec|features)/})
+
   s.require_paths = ["lib"]
 
-  s.add_runtime_dependency "yell", ">= 0.13.4"
+  s.add_runtime_dependency "yell", "~> 1.1"
 end

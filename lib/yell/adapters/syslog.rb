@@ -56,7 +56,7 @@ module Yell #:nodoc:
       end
 
       write do |event|
-        stream.log( Severities[event.level], clean(event.message) )
+        stream.log( Severities[event.level], format(*event.messages) )
       end
 
       close do
@@ -163,8 +163,13 @@ module Yell #:nodoc:
       end
 
       # Borrowed from [SyslogLogger](https://github.com/seattlerb/sysloglogger)
-      def clean( message )
-        message = message.to_s.dup
+      def format( *messages )
+        messages.map { |m| to_message(m) }.join( ' ' )
+      end
+
+      def to_message( m )
+        message = m.to_s
+
         message.strip!
         message.gsub!(/%/, '%%') # syslog(3) freaks on % (printf)
         message.gsub!(/\e\[[^m]*m/, '') # remove useless ansi color codes
