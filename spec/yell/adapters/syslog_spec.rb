@@ -1,19 +1,20 @@
 require 'spec_helper'
 
 describe Yell::Adapters::Syslog do
-  let( :event ) { Yell::Event.new( 1, "Hello World" ) }
+  let(:logger) { Yell::Logger.new }
+  let(:event) { Yell::Event.new(logger, 1, "Hello World" ) }
 
   before do
     Syslog.close if Syslog.opened?
   end
 
   shared_examples_for "a Syslog adapter" do
-    let( :adapter ) { Yell::Adapters::Syslog.new }
+    let(:adapter) { Yell::Adapters::Syslog.new }
 
     it "should call Syslog correctly" do
       mock( Syslog ).log( Yell::Adapters::Syslog::Severities[subject], "Hello World" )
 
-      adapter.write Yell::Event.new( subject, "Hello World" )
+      adapter.write Yell::Event.new(logger, subject, "Hello World" )
     end
   end
 
@@ -35,12 +36,12 @@ describe Yell::Adapters::Syslog do
   context "OptionMap" do
     subject { Yell::Adapters::Syslog::OptionMap }
 
-    it { subject[:cons].should == Syslog::LOG_CONS }
-    it { subject[:ndelay].should == Syslog::LOG_NDELAY }
-    it { subject[:nowait].should == Syslog::LOG_NOWAIT }
-    it { subject[:odelay].should == Syslog::LOG_ODELAY }
-    it { subject[:perror].should == Syslog::LOG_PERROR }
-    it { subject[:pid].should == Syslog::LOG_PID }
+    its ( [:cons] ) { should == Syslog::LOG_CONS }
+    its ( [:ndelay] ) { should == Syslog::LOG_NDELAY }
+    its ( [:nowait] ) { should == Syslog::LOG_NOWAIT }
+    its ( [:odelay] ) { should == Syslog::LOG_ODELAY }
+    its ( [:perror] ) { should == Syslog::LOG_PERROR }
+    its ( [:pid] ) { should == Syslog::LOG_PID }
   end
 
   context "FacilityMap" do
