@@ -119,5 +119,14 @@ describe Yell::Adapters::Syslog do
     end
   end
 
+  context :message do
+    subject { Yell::Adapters::Syslog.new }
+    let(:event) { Yell::Event.new(logger, 1, "Hello World".freeze ) }
+
+    it "formats frozen strings" do
+      expect { subject.write event }.to_not raise_error
+    end
+  end
+
 end
 
