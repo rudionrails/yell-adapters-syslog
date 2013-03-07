@@ -169,6 +169,7 @@ module Yell #:nodoc:
 
       def to_message( m )
         message = m.to_s
+        message = message.dup if message.frozen?
 
         message.strip!
         message.gsub!(/%/, '%%') # syslog(3) freaks on % (printf)
