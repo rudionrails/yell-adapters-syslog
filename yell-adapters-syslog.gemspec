@@ -18,5 +18,5 @@ Gem::Specification.new do |s|
 
   s.require_paths = ["lib"]
 
-  s.add_runtime_dependency "yell", "~> 1.3"
+  s.add_runtime_dependency "yell", "~> 2.0"
 end
