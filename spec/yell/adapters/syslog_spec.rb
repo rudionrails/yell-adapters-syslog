@@ -120,11 +120,18 @@ describe Yell::Adapters::Syslog do
   end
 
   context :message do
-    subject { Yell::Adapters::Syslog.new }
+    let(:adapter) { Yell::Adapters::Syslog.new }
     let(:event) { Yell::Event.new(logger, 1, "Hello World".freeze) }
 
     it "formats frozen strings" do
-      expect { subject.write event }.to_not raise_error
+      expect { adapter.write event }.to_not raise_error
+    end
+
+    it "does not modify strings" do
+      event = Yell::Event.new(logger, 1, "%")
+      adapter.write(event)
+
+      event.messages.should == ["%"]
     end
   end
 

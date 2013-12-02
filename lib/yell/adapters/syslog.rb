@@ -169,13 +169,10 @@ module Yell #:nodoc:
 
       def to_message( m )
         message = m.to_s
-        message = message.dup if message.frozen?
 
-        message.strip!
-        message.gsub!(/%/, '%%') # syslog(3) freaks on % (printf)
-        message.gsub!(/\e\[[^m]*m/, '') # remove useless ansi color codes
-
-        message
+        message.strip.
+          gsub(/%/, '%%'). # syslog(3) freaks on % (printf)
+          gsub(/\e\[[^m]*m/, '') # remove useless ansi color codes
       end
 
     end
