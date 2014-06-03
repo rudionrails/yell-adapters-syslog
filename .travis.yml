@@ -4,19 +4,15 @@ script: "rake"
 
 rvm:
   - 1.8.7
-  - 1.9.2
   - 1.9.3
+  - 2.0.0
+  - 2.1.1
   - jruby-18mode
   - jruby-19mode
-  - rbx-18mode
-  - rbx-19mode
+  - rbx-2
   - ree
-
-branch:
-  only:
-    - master
-    - /^v[\d\.]+$/
 
 notifications:
   email:
     - me@rudionrails.com
+
