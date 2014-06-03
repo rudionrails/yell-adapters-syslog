@@ -50,9 +50,9 @@ module Yell #:nodoc:
       }
 
       setup do |options|
-        self.ident    = options[:ident] || $0
-        self.options  = options[:options] || [:pid, :cons]
-        self.facility = options[:facility]
+        self.ident    = Yell.__fetch__(options, :ident, :default => $0)
+        self.options  = Yell.__fetch__(options, :options, :default => [:pid, :cons])
+        self.facility = Yell.__fetch__(options, :facility)
       end
 
       write do |event|
@@ -86,7 +86,7 @@ module Yell #:nodoc:
           @ident
         else
           # deprecate, but should still work
-          Yell._deprecate( "0.6.0", "Use :ident= for setting the Syslog ident" )
+          Yell.__deprecate__( "0.6.0", "Use :ident= for setting the Syslog ident" )
 
           self.ident = val
         end
@@ -114,7 +114,7 @@ module Yell #:nodoc:
           @options
         else
           # deprecate, but should still work
-          Yell._deprecate( "0.6.0", "Use :options= for setting the Syslog options" )
+          Yell.__deprecate__( "0.6.0", "Use :options= for setting the Syslog options" )
 
           self.options = values
         end
@@ -143,7 +143,7 @@ module Yell #:nodoc:
           @facility
         else
           # deprecate, but should still work
-          Yell._deprecate( "0.6.0", "Use :facility= for setting the Syslog facility" )
+          Yell.__deprecate__( "0.6.0", "Use :facility= for setting the Syslog facility" )
 
           self.facility = values
         end
