@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name        = "yell-adapters-syslog"
-  s.version     = "2.0.1"
+  s.version     = "2.0.2"
 
   s.authors     = ["Rudolf Schmidt"]
 
